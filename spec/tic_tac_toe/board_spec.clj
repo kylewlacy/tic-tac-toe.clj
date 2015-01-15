@@ -58,4 +58,18 @@
                  (board/mark [2 1] :o)
                  (board/mark [3 2] :x)
                  (board/mark [2 3] :o)
-                 board/cols))))
+                 board/cols)))
+  (it "can retrieve a seq of diagonal"
+    (should= [[:x :x nil]
+              [:o :x nil]]
+             #_[[:x  nil :o]
+                [:o  :x  :o]
+                [nil :x  nil]]
+             (-> (board/empty-board [3 3])
+                 (board/mark [1 1] :x)
+                 (board/mark [1 3] :o)
+                 (board/mark [2 2] :x)
+                 (board/mark [2 1] :o)
+                 (board/mark [3 2] :x)
+                 (board/mark [2 3] :o)
+                 board/diags))))

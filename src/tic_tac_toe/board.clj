@@ -20,3 +20,11 @@
 
 (defn cols [board]
   (apply map vector board))
+
+(defn diags [board]
+  (let [[rows cols] (size board)]
+    (if (= rows cols)
+      [(map #(seq/fetch-in board [% %])
+            (range rows))
+       (map #(seq/fetch-in board [% (- rows % 1)])
+            (range rows))])))
