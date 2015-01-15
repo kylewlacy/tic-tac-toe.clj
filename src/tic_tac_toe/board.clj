@@ -14,3 +14,9 @@
 
 (defn marker-at [board [row col]]
   (seq/fetch-in board [(dec row) (dec col)]))
+
+(defn rows [board]
+  board)
+
+(defn cols [board]
+  (apply map vector board))
