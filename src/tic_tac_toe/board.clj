@@ -9,10 +9,10 @@
         rows (count (first board))]
     [rows cols]))
 
-(defn mark [board [row col] marker]
+(defn mark-cell [board [row col] marker]
   (seq/with-in board [(dec row) (dec col)] marker))
 
-(defn marker-at [board [row col]]
+(defn cell [board [row col]]
   (seq/fetch-in board [(dec row) (dec col)]))
 
 (defn rows [board]
