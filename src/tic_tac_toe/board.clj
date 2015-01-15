@@ -4,6 +4,11 @@
 (defn empty-board [[rows cols]]
   (repeat cols (repeat rows nil)))
 
+(defn size [board]
+  (let [cols (count board)
+        rows (count (first board))]
+    [rows cols]))
+
 (defn mark [board [row col] marker]
   (seq/with-in board [(dec row) (dec col)] marker))
 

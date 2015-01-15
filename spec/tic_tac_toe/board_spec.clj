@@ -12,6 +12,10 @@
               [nil nil nil nil]]
              (board/empty-board [4 2]))
     (should= [] (board/empty-board [0 0])))
+  (it "can get its dimensions"
+    (should= [3 3] (board/size (board/empty-board [3 3])))
+    (should= [4 2] (board/size (board/empty-board [4 2])))
+    (should= [0 0] (board/size (board/empty-board [0 0]))))
   (it "can mark cells"
     (should= [[nil nil nil]
               [nil :x  nil]
