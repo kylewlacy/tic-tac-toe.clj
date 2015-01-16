@@ -34,4 +34,10 @@
       (should= :x (-> @state
                       (game/move [1 1])
                       (game/move [2 2])
-                      :player)))))
+                      :player)))
+    (it "gets a seq of possible moves"
+      (let [state* (game/move @state [1 2])]
+        (should= [[1 1] [1 2] [1 3] [2 1] [2 2] [2 3] [3 1] [3 2] [3 3]]
+                 (game/valid-moves @state))
+        (should= [[1 1] [1 3] [2 1] [2 2] [2 3] [3 1] [3 2] [3 3]]
+                 (game/valid-moves state*))))))

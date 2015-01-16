@@ -17,3 +17,10 @@
     (assoc state :board  (board/mark-cell board cell player)
                  :player (next-player state))
     state))
+
+(defn valid-moves [{:keys [board] :as state}]
+  (let [[n-rows n-cols] (board/size board)
+        rows            (map inc (range 0 n-rows))
+        cols            (map inc (range 0 n-cols))
+        rows+cols       (for [row rows, col cols] [row col])]
+    (filter (partial valid-move? state) rows+cols)))
