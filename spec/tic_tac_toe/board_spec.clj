@@ -38,7 +38,7 @@
                       (board/mark-cell [3 3] :x)
                       (board/mark-cell [2 2] :o)
                       (board/cell [2 2])))))
-  (context "when retrieving rows, columns, and diagonals"
+  (context "when getting seqs of cells"
     (with board (-> (board/empty-board [3 3])
                     (board/mark-cell [1 1] :x)
                     (board/mark-cell [1 3] :o)
@@ -59,4 +59,9 @@
     (it "can get a seq of diagonals"
       (should= [[:x :x nil]
                 [:o :x nil]]
-               (board/diags @board)))))
+               (board/diags @board)))
+    (it "can get a seq of cells"
+      (should= [:x  nil :o
+                :o  :x  :o
+                nil :x  nil]
+               (board/cells @board)))))

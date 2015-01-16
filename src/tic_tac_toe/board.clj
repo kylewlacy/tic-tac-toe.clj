@@ -28,3 +28,6 @@
             (range rows))
        (map #(seq/fetch-in board [% (- rows % 1)])
             (range rows))])))
+
+(defn cells [board]
+  (apply concat board))
