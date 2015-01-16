@@ -24,3 +24,28 @@
         cols            (map inc (range 0 n-cols))
         rows+cols       (for [row rows, col cols] [row col])]
     (filter (partial valid-move? state) rows+cols)))
+
+(defn maybe-winner* [cells]
+  (if (apply = cells)
+    (first cells)))
+
+(defn some-winner [cell-groups]
+  (some identity (map maybe-winner* cell-groups)))
+
+(defn maybe-winner [{:keys [board]}]
+  (or (some-winner (board/rows board))
+      (some-winner (board/cols board))
+      (some-winner (board/diags board))))
+
+(defn win? [state]
+  (boolean (maybe-winner state)))
+
+(defn winner? [state player]
+  (= player (maybe-winner state)))
+
+(defn draw? [state]
+  (and (not (win? state))
+       (empty? (valid-moves state))))
+
+(defn end? [state]
+  (or (win? state) (draw? state)))
