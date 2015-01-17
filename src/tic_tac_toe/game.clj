@@ -49,3 +49,10 @@
 
 (defn end? [state]
   (or (win? state) (draw? state)))
+
+(defn valuer-for [player]
+  (fn [state]
+    (cond
+      (winner? state player) 1
+      (win? state)           -1
+      :else                  0)))
