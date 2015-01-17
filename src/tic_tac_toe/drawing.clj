@@ -21,7 +21,7 @@
     (pad-str str* left-padding right-padding)))
 
 (defn cell-str* [board-cell]
-  (or (get *markers* board-cell) ""))
+  (or (get *markers* board-cell) (str board-cell)))
 
 (defn cell-str [board-cell]
   (center-str (cell-str* board-cell) *cell-width*))
