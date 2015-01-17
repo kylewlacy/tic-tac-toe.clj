@@ -64,4 +64,14 @@
       (should= [:x  nil :o
                 :o  :x  :o
                 nil :x  nil]
-               (board/cells @board)))))
+               (board/cells @board)))
+    (it "can get a seq of cell locations"
+      (should= [[1 1] [1 2] [1 3]
+                [2 1] [2 2] [2 3]
+                [3 1] [3 2] [3 3]]
+               (board/cell-locations (board/empty-board [3 3])))
+      (should= [[1 1] [1 2] [1 3] [1 4]
+                [2 1] [2 2] [2 3] [2 4]
+                [3 1] [3 2] [3 3] [3 4]
+                [4 1] [4 2] [4 3] [4 4]]
+               (board/cell-locations (board/empty-board [4 4]))))))

@@ -31,3 +31,8 @@
 
 (defn cells [board]
   (apply concat board))
+
+(defn cell-locations [board]
+  (let [[rows cols] (size board)]
+    (for [row (range rows), col (range cols)]
+      [(inc row) (inc col)])))
