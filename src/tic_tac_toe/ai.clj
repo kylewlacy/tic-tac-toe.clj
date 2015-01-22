@@ -47,5 +47,8 @@
                            max-depth)]
        (or (first moves) [1 1]))))
 
-(defn move [state max-depth]
-  (game/move state (pick-move state max-depth)))
+(defn move
+  ([state]
+     (move state (depth-required-for state)))
+  ([state max-depth]
+     (game/move state (pick-move state max-depth))))
