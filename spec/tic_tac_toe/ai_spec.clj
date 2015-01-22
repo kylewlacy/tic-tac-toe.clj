@@ -9,7 +9,7 @@
 (defn play-all-games [state]
   (if (game/end? state)
     [state]
-    (mapcat (comp play-all-games #(ai/move % 6)) (play-next-moves state))))
+    (mapcat (comp play-all-games ai/move) (play-next-moves state))))
 
 (describe "the tic-tac-toe AI"
   (context "when playing the game"
@@ -35,7 +35,7 @@
                    (game/move [2 2])
                    (ai/pick-move 2))))
     (it "never loses a game as X"
-      (let [first-move (ai/move (game/start [3 3]) 6)
+      (let [first-move (ai/move (game/start [3 3]))
             all-games  (play-all-games first-move)
             games-lost (filter #(game/winner? % :o) all-games)]
         (should-be empty? games-lost)))
