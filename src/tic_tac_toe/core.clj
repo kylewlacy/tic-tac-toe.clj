@@ -29,14 +29,7 @@
 (defn board-with-numbers [board]
   (reduce maybe-mark-cell-number board (board/cell-locations board)))
 
-(defn game-end-str [state player]
-  (cond
-    (game/winner? state player)
-      "You win!"
-    (game/win? state)
-      "You lost!"
-    (game/draw? state)
-    "It's a draw!"))
+
 
 (defn prompt [prompt-str]
   (print prompt-str "> ")
@@ -46,6 +39,7 @@
 (defn parse-prompt [parse-f prompt-str]
   (loop [input nil]
     (or input (recur (parse-f (prompt prompt-str))))))
+
 
 
 (defn maybe-parse-int [int-str]
@@ -60,11 +54,40 @@
     (when (game/valid-move? state cell)
       cell)))
 
+(defn parse-player-token [maybe-str]
+  (let [maybe-kw (keyword (str/lower-case (or (first maybe-str) "")))]
+    (when (or (= maybe-kw :x) (= maybe-kw :o))
+      maybe-kw)))
+
+
+
 (defn print-move [{:keys [player board] :as state} cell]
   (let [player-name (str/upper-case (name player))
         move-num    (int (cell->number (board/size board) cell))]
     (println \newline player-name ">" move-num))
   (game/move state cell))
+
+(defn state-str [{:keys [board]}]
+  (-> board
+      board-with-numbers
+      draw/board-str))
+
+(defn print-state [state]
+  (println (state-str state)))
+
+(defn game-end-str [state player]
+  (cond
+    (game/winner? state player)
+      "You won!"
+    (game/win? state)
+      "You lost!"
+    (game/draw? state)
+    "It's a draw!"))
+
+(defn print-game-end [state player]
+  (println (game-end-str state player)))
+
+
 
 (defn player-move [state]
   (let [parse-move  (partial parse-player-move-cell state)
@@ -79,25 +102,16 @@
     (player-move state)
     (ai-move state)))
 
-(defn print-state [{:keys [board]}]
-  (let [numbered-board (board-with-numbers board)]
-    (println (draw/board-str numbered-board))))
+
 
 (defn play-game [init-state player]
   (loop [state init-state]
     (print-state state)
     (if (game/end? state)
-      (println (game-end-str state player))
+      (print-game-end state player)
       (recur (do-move state player)))))
 
-
-
-(defn parse-player-token [maybe-str]
-  (let [maybe-kw (keyword (str/lower-case (or (first maybe-str) "")))]
-    (when (or (= maybe-kw :x) (= maybe-kw :o))
-      maybe-kw)))
-
 (defn -main [& args]
-  (let [player (parse-prompt parse-player-token
-                             "Do you want to play as X's or O's?")]
+  (let [player-prompt-str "Do you want to play as X's or O's?"
+        player            (parse-prompt parse-player-token player-prompt-str)]
     (play-game (game/start [3 3]) player)))
