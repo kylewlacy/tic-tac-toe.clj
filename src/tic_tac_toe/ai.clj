@@ -34,7 +34,7 @@
 
 (defn pick-move
   ([state]
-     (pick-move state unlimited-depth))
+     (pick-move state (depth-required-for state)))
   ([state max-depth]
      (let [player (:player state)
            valuer (game/valuer-for player)
