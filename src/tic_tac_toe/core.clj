@@ -95,7 +95,7 @@
     (print-move state player-cell)))
 
 (defn ai-move [state]
-  (print-move state (ai/pick-move state 4)))
+  (print-move state (ai/pick-move state)))
 
 (defn do-move [state player]
   (if (= player (:player state))
