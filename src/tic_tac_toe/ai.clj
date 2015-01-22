@@ -1,9 +1,11 @@
 (ns tic-tac-toe.ai
   (:require [tic-tac-toe.game :as game]))
 
+(def unlimited-depth -1)
+
 (defn minimax
   ([init-state move-f moves-f terminal?-f value-f max?-f]
-     (minimax init-state move-f moves-f terminal?-f value-f max?-f -1))
+     (minimax init-state move-f moves-f terminal?-f value-f max?-f unlimited-depth))
   ([init-state move-f moves-f terminal?-f value-f max?-f max-depth]
      (letfn [(reduce-moves [moves] (reduce move-f init-state moves))
              (moves-value [moves] (value-f (reduce-moves moves)))
@@ -21,7 +23,7 @@
 
 (defn pick-move
   ([state]
-     (pick-move state -1))
+     (pick-move state unlimited-depth))
   ([state max-depth]
      (let [player (:player state)
            valuer (game/valuer-for player)
