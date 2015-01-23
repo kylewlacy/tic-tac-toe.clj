@@ -65,10 +65,13 @@
 
 
 
-(defn print-move [{:keys [player board] :as state} cell]
+(defn move-str [{:keys [player board] :as state} cell]
   (let [player-name (str/upper-case (name player))
         move-num    (int (cell->number (board/size board) cell))]
-    (println \newline player-name ">" move-num))
+    (str player-name " > " move-num)))
+
+(defn print-move [state cell]
+  (println \newline (move-str state cell))
   (game/move state cell))
 
 (defn state-str [{:keys [board]}]
