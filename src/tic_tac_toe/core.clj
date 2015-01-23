@@ -5,6 +5,10 @@
             [tic-tac-toe.drawing :as draw]
             [tic-tac-toe.ai :as ai]))
 
+(def ^:dynamic *end-strs* {:win "You won!"
+                           :lose "You lost!"
+                           :draw "It's a draw"})
+
 (defn cell->number
   "Given a board size and a board cell location, return a single number used to
    index a cell location. For a 3x3 board, the result of `cell->number` will
@@ -78,11 +82,11 @@
 (defn game-end-str [state player]
   (cond
     (game/winner? state player)
-      "You won!"
+      (:win *end-strs*)
     (game/win? state)
-      "You lost!"
+      (:lose *end-strs*)
     (game/draw? state)
-    "It's a draw!"))
+      (:draw *end-strs*)))
 
 (defn print-game-end [state player]
   (println (game-end-str state player)))
