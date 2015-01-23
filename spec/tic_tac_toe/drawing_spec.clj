@@ -25,11 +25,7 @@
                     (board/mark-cell [3 1] :o)
                     (board/mark-cell [3 3] :x)))
     (around [it]            
-      (binding [draw/*row*        "-"
-                draw/*col*        "|"
-                draw/*row+col*    "+"
-                draw/*markers*    {:x "X", :o "O"}
-                draw/*cell-width* 1]
+      (binding [draw/*charset* draw/ascii-charset]
         (it)))
     (it "draws a board's row"
       (should= "X| | " (draw/row-str (first (board/rows @board))))
