@@ -74,4 +74,41 @@
                 [2 1] [2 2] [2 3] [2 4]
                 [3 1] [3 2] [3 3] [3 4]
                 [4 1] [4 2] [4 3] [4 4]]
-               (board/cell-locations (board/empty-board [4 4]))))))
+               (board/cell-locations (board/empty-board [4 4])))))
+  (context "when being transformed"
+    (with board [[:a :b :c]
+                 [:d :e :f]
+                 [:g :h :i]])
+    (it "can be rotated"
+      (should= [[:g :d :a]
+                [:h :e :b]
+                [:i :f :c]]
+               (board/rotate @board 1))
+      (should= [[:i :h :g]
+                [:f :e :d]
+                [:c :b :a]]
+               (board/rotate @board 2))
+      (should= [[:c :f :i]
+                [:b :e :h]
+                [:a :d :g]]
+               (board/rotate @board 3))
+      (should= @board (board/rotate @board 4))
+      (should= @board (board/rotate @board 0))
+      (should= (board/rotate @board 3) (board/rotate @board -1)))
+    (it "can be mirrored"
+      (should= [[:c :b :a]
+                [:f :e :d]
+                [:i :h :g]]
+               (board/mirror-x @board))
+      (should= [[:g :h :i]
+                [:d :e :f]
+                [:a :b :c]]
+               (board/mirror-y @board))
+      (should= [[:a :d :g]
+                [:b :e :h]
+                [:c :f :i]]
+               (board/mirror-diag-top-left @board))
+      (should= [[:i :f :c]
+                [:h :e :b]
+                [:g :d :a]]
+               (board/mirror-diag-bottom-left @board)))))
