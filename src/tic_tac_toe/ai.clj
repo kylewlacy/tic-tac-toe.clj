@@ -22,6 +22,34 @@
                    (apply select-key moves-value next-moves))))]
        (minimax* init-state [] max-depth))))
 
+(defn rotate-state [state rotations]
+  (update-in state [:board] board/rotate rotations))
+
+(defn mirror-state-x [state]
+  (update-in state [:board] board/mirror-x))
+
+(defn mirror-state-y [state]
+  (update-in state [:board] board/mirror-y))
+
+(defn mirror-state-diag-top-left [state]
+  (update-in state [:board] board/mirror-diag-top-left))
+
+(defn mirror-state-diag-bottom-left [state]
+  (update-in state [:board] board/mirror-diag-bottom-left))
+
+(defn states-isomorphic? [a b]
+  (or (= a b)
+      (= a (rotate-state b 1))
+      (= a (rotate-state b 2))
+      (= a (rotate-state b 3))
+      (= a (mirror-state-x b))
+      (= a (mirror-state-y b))
+      (= a (mirror-state-diag-top-left b))
+      (= a (mirror-state-diag-bottom-left b))))
+
+(defn moves-isomorphic? [state a b]
+  (states-isomorphic? (game/move state a) (game/move state b)))
+
 (defn depth-required-for
   "Returns the minimum minimax depth required to play a perfect game for a
    given state (see https://gist.github.com/kylewlacy/867c67b15c298d5204c4
