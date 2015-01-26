@@ -92,7 +92,7 @@
            valuer (game/valuer-for player)
            moves  (minimax state
                            game/move
-                           game/valid-moves
+                           unique-moves
                            game/end?
                            valuer
                            #(= player (:player %))
