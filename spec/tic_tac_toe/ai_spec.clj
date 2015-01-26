@@ -11,6 +11,9 @@
     [state]
     (mapcat (comp play-all-games ai/move) (play-next-moves state))))
 
+(defn includes? [seq- item]
+  (not (empty? (filter #(= % item) seq-))))
+
 (describe "the tic-tac-toe AI"
   (context "when computing isomorphic states"
     (it "determines if two states are isomorphic"
@@ -55,7 +58,21 @@
         (should-be false? (ai/states-isomorphic? c a1))
         (should-be false? (ai/states-isomorphic? c a2))
         (should-be false? (ai/states-isomorphic? c b))
-        (should-be true? (ai/states-isomorphic? c c)))))
+        (should-be true? (ai/states-isomorphic? c c))))
+    (it "gets a seq of unique moves for a state"
+      (let [state            (game/start [3 3])
+            unique           (ai/unique-moves state)
+            contains-edge?   (or (includes? unique [1 2])
+                                 (includes? unique [2 3])
+                                 (includes? unique [3 2])
+                                 (includes? unique [2 1]))
+            contains-corner? (or (includes? unique [1 1])
+                                 (includes? unique [1 3])
+                                 (includes? unique [3 3])
+                                 (includes? unique [3 1]))
+            contains-center? (includes? unique [2 2])]
+        (should-be true?
+                   (and contains-edge? contains-corner? contains-center?)))))
   (context "when playing the game"
     (it "makes valid moves"
       (let [state  (game/start [3 3])

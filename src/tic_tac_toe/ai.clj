@@ -50,6 +50,30 @@
 (defn moves-isomorphic? [state a b]
   (states-isomorphic? (game/move state a) (game/move state b)))
 
+(defn filter-unique-moves [state moves]
+  (if (zero? (count moves))
+    moves
+    (let [move        (first moves)
+          other-moves (rest moves)
+          iso-moves   (filter #(moves-isomorphic? state move %)
+                              other-moves)
+          unique?     (empty? iso-moves)
+          rest-unique (filter-unique-moves state other-moves)]
+      (if unique?
+        (concat [move] rest-unique)
+        rest-unique))))
+
+(defn unique-moves
+  "For a given state, return a subset of the state's valid moves,
+   filtering moves that are logically unique, and removing moves that
+   are isomorphic. For example:
+     (unique-moves (game/start [3 3])) => [1 1] [1 2] [2 2] ;; (or equivalent)
+   That is, for an empty 3x3 game, the only distinct moves are a corner, an
+   edge, or the center cell. This is useful for trimming minimax branches
+   that are logically equivalent"
+  [state]
+  (filter-unique-moves state (game/valid-moves state)))
+
 (defn depth-required-for
   "Returns the minimum minimax depth required to play a perfect game for a
    given state (see https://gist.github.com/kylewlacy/867c67b15c298d5204c4
