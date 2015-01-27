@@ -53,10 +53,11 @@
       nil)))
 
 (defn parse-player-move-cell [state num-str]
-  (let [num  (or (maybe-parse-int num-str) -1)
-        cell (number->cell (board/size (:board state)) num)]
-    (when (game/valid-move? state cell)
-      cell)))
+  (when-let [num (maybe-parse-int num-str)]
+    (let [cell (number->cell (board/size (:board state)) num)
+          valid? (game/valid-move? state cell)]
+      (when valid?
+        cell))))
 
 (defn parse-player-token [maybe-str]
   (let [maybe-kw (keyword (str/lower-case (or (first maybe-str) "")))]
