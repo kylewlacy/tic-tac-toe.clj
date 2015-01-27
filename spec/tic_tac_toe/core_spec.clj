@@ -16,6 +16,25 @@
     (it "properly gets a cell from a number"
       (doseq [[num cell] @nums->3x3-cells]
         (should= cell (ttt/number->cell [3 3] num)))))
+  (context "when parsing user input"
+    (it "parses a string to an integer, or nil"
+      (should= 5 (ttt/maybe-parse-int "5"))
+      (should= 15 (ttt/maybe-parse-int "15"))
+      (should-be nil? (ttt/maybe-parse-int ""))
+      (should-be nil? (ttt/maybe-parse-int "x")))
+    (it "parses a string to a player token, or nil"
+      (doseq [x ["x" "X" "xs" "Xs" "x's" "X's"]]
+        (should= :x (ttt/parse-player-token x)))
+      (doseq [o ["o" "O" "os" "Os" "o's" "O's"]]
+        (should= :o (ttt/parse-player-token o)))
+      (doseq [other ["foo" "z" "q" "bar" ""]]
+        (should-be nil? (ttt/parse-player-token other))))
+    (it "parses a string to a move, or nil"
+      (let [state* (game/start [3 3])
+            state  (game/move state* [2 2])]
+        (should= [2 2] (ttt/parse-player-move-cell state* "5"))
+        (should-be nil? (ttt/parse-player-move-cell state* ""))
+        (should-be nil? (ttt/parse-player-move-cell state "5")))))
   (context "when drawing a game"
     (around [it]
       (binding [draw/*charset* draw/ascii-charset]
